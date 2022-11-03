@@ -1,48 +1,50 @@
 "use strict";
 
-const updateSamplesBtnEl = document.querySelector("#updateSamplesBtn");
+const slotsContainerEl = document.querySelector("#slots_container");
+const audiosContainerEl = document.querySelector("#audios_continer");
+const newSamplesBtnEl = document.querySelector("#newSamplesBtn");
 
-let isLoading = false;
+const slots = {};
+const addSlot = (id, label, tags, src, key) =>
+  (slots[id] = {
+    label,
+    tags,
+    src,
+    key,
+    locked: false,
+    loading: false,
+  });
 
-const slots = [
-  {
-    id: "slot01",
-    kbd: 65,
-    name: "kick",
-    tags: ["kick"],
-    locked: false,
-  },
-  {
-    id: "slot02",
-    kbd: 83,
-    name: "snare",
-    tags: ["snare"],
-    locked: false,
-  },
-  {
-    id: "slot03",
-    kbd: 68,
-    name: "closed hh",
-    tags: ["closed", "hihat"],
-    locked: false,
-  },
-  {
-    id: "slot04",
-    kbd: 70,
-    name: "open hh",
-    tags: ["open", "hihat"],
-    locked: false,
-  },
-];
+addSlot("slot01", "kick", ["kick"], "sounds/kick.wav", "A");
+addSlot("slot02", "snare", ["snare"], "sounds/snare.wav", "S");
+addSlot("slot03", "closed hh", ["closed", "hihat"], "sounds/hihat.wav", "D");
+addSlot("slot04", "open hh", ["open", "hihat"], "sounds/openhat.wav", "F");
 
-const keyToSlot = {
-  KeyA: "01",
-  KeyS: "02",
-  KeyD: "03",
-  KeyF: "04",
+const keyToSlot = {};
+
+for (let [slot, props] of Object.entries(slots)) {
+  keyToSlot["Key" + props.key] = slot;
+
+  //add elements to the DOM
+  slotsContainerEl.innerHTML += `
+  <div data-slot="${slot}" class="slot">
+    <div class="slot__key">${props.key}
+    </div>${props.label}
+  </div>
+  `;
+
+  audiosContainerEl.innerHTML += `<audio data-slot="${slot}" src="${props.src}"></audio>`;
+}
+
+const isAnySlotLoading = () => {
+  for (let [_, props] of Object.entries(slots)) {
+    if (props.loading) return true;
+  }
+  return false;
 };
 
-async function getRandomSample(tags) {
+async function getRandomSampleUrl(tags) {
+  console.log(`getRandomSampleUrl(${tags})`);
   const tagsQuery = tags.map((tag) => "tag:" + tag).join("%20");
 
   const res = await fetch(
@@ -50,57 +52,45 @@ async function getRandomSample(tags) {
   );
 
   const data = await res.json();
-  const samples = data.results;
-  const sample =
-    samples[Math.floor(Math.random() * samples.length)].previews[
-      "preview-hq-ogg"
-    ];
+  const urls = data.results;
+  const url =
+    urls[Math.floor(Math.random() * urls.length)].previews["preview-hq-ogg"];
 
-  return sample;
+  console.log(tags, url);
+  return url;
 }
 
-function setIsLoading(isLoadingState) {
-  isLoading = isLoadingState;
-  updateSamplesBtnEl.disabled = isLoading;
+async function newSampleInSlot(slot) {
+  newSamplesBtnEl.disabled = isAnySlotLoading();
+  const slotEl = document.querySelector(`div[data-slot="${slot}"]`);
+  const audioEl = document.querySelector(`audio[data-slot="${slot}"]`);
+  const oldInnerHTML = slotEl.innerHTML;
+
+  slotEl.innerHTML = "Loading";
+  slots[slot].loading = true;
+
+  const src = await getRandomSampleUrl(slots[slot].tags);
+  audioEl.src = src;
+  slotEl.innerHTML = oldInnerHTML;
+  slots[slot].loading = false;
+  newSamplesBtnEl.disabled = isAnySlotLoading();
 }
 
-async function updateSamples(slots) {
-  setIsLoading(true);
-
-  let promisesIDs = [];
-  let promises = [];
-
-  for (let slot of slots) {
-    if (slot.locked) continue;
-
-    promisesIDs.push(slot.id);
-    promises.push(getRandomSample(slot.tags));
+function newSamplesInAllSlots() {
+  for (let [slot, props] of Object.entries(slots)) {
+    if (props.locked) continue;
+    console.log(slot);
+    newSampleInSlot(slot);
   }
-
-  console.log(promises);
-
-  let srcs = await Promise.all(promises);
-  console.log("— AWAITED — ");
-
-  console.log(srcs);
-
-  for (let [i, id] of promisesIDs.entries()) {
-    const audioEl = document.querySelector("#audio-" + id);
-    audioEl.src = srcs[i];
-  }
-
-  setIsLoading(false);
 }
 
-// updateSamples(slots);
+newSamplesInAllSlots();
 
 function playSound(slot) {
-  if (isLoading) return;
+  if (slots[slot].loading) return;
 
   const audioEl = document.querySelector(`audio[data-slot="${slot}"]`);
   const slotEl = document.querySelector(`div[data-slot="${slot}"]`);
-
-  if (!audioEl) return;
 
   slotEl.classList.add("playing");
 
@@ -110,15 +100,15 @@ function playSound(slot) {
   audioEl.play();
 }
 
-const slotsElements = document.querySelectorAll("div[data-slot]");
-slotsElements.forEach((slotEl) => {
+const slotsEls = document.querySelectorAll("div[data-slot]");
+slotsEls.forEach((slotEl) => {
   slotEl.addEventListener("click", () =>
     playSound(slotEl.getAttribute("data-slot"))
   );
 });
 
-updateSamplesBtnEl.addEventListener("click", () => {
-  updateSamples(slots);
+newSamplesBtnEl.addEventListener("click", () => {
+  newSamplesInAllSlots();
 });
 
 window.addEventListener("keydown", (e) => {

@@ -9,30 +9,10 @@
   </head>
   <body>
     <div class="wrapper">
-      <div class="slots">
-        <div data-slot="01" class="slot">
-          <div class="slot__key">A</div>
-          kick
-        </div>
-        <div data-slot="02" class="slot">
-          <div class="slot__key">S</div>
-          snare
-        </div>
-        <div data-slot="03" class="slot">
-          <div class="slot__key">D</div>
-          closed hh
-        </div>
-        <div data-slot="04" class="slot">
-          <div class="slot__key">F</div>
-          open hh
-        </div>
-      </div>
-      <button class="button" id="updateSamplesBtn">new samples</button>
+      <div id="slots_container" class="slots"></div>
+      <button class="button" id="newSamplesBtn">new samples</button>
     </div>
-    <audio id="audio-slot01" data-slot="01" src="sounds/kick.wav"></audio>
-    <audio id="audio-slot02" data-slot="02" src="sounds/snare.wav"></audio>
-    <audio id="audio-slot03" data-slot="03" src="sounds/hihat.wav"></audio>
-    <audio id="audio-slot04" data-slot="04" src="sounds/openhat.wav"></audio>
+    <div id="audios_continer"></div>
 
     <script src="script.js"></script>
   </body>
