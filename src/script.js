@@ -5,21 +5,42 @@ const updateSamplesBtnEl = document.querySelector("#updateSamplesBtn");
 let isLoading = false;
 
 const slots = [
-  { id: "slot01", name: "kick", tags: ["kick"], locked: false },
-  { id: "slot02", name: "snare", tags: ["snare"], locked: false },
+  {
+    id: "slot01",
+    kbd: 65,
+    name: "kick",
+    tags: ["kick"],
+    locked: false,
+  },
+  {
+    id: "slot02",
+    kbd: 83,
+    name: "snare",
+    tags: ["snare"],
+    locked: false,
+  },
   {
     id: "slot03",
+    kbd: 68,
     name: "closed hh",
     tags: ["closed", "hihat"],
     locked: false,
   },
   {
     id: "slot04",
+    kbd: 70,
     name: "open hh",
     tags: ["open", "hihat"],
     locked: false,
   },
 ];
+
+const keyToSlot = {
+  KeyA: "01",
+  KeyS: "02",
+  KeyD: "03",
+  KeyF: "04",
+};
 
 async function getRandomSample(tags) {
   const tagsQuery = tags.map((tag) => "tag:" + tag).join("%20");
@@ -65,42 +86,42 @@ async function updateSamples(slots) {
 
   for (let [i, id] of promisesIDs.entries()) {
     const audioEl = document.querySelector("#audio-" + id);
-
     audioEl.src = srcs[i];
   }
 
   setIsLoading(false);
 }
 
-updateSamples(slots);
+// updateSamples(slots);
 
-function removeTransition(e) {
-  console.log("transition end");
-
-  // if (e.propertyName !== "transform") return;
-  e.target.classList.remove("playing");
-}
-
-function playSound(e) {
+function playSound(slot) {
   if (isLoading) return;
 
-  const audioEl = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-  const slotEl = document.querySelector(`div[data-key="${e.keyCode}"]`);
+  const audioEl = document.querySelector(`audio[data-slot="${slot}"]`);
+  const slotEl = document.querySelector(`div[data-slot="${slot}"]`);
 
   if (!audioEl) return;
 
   slotEl.classList.add("playing");
+
+  setTimeout(() => slotEl.classList.remove("playing"), 0);
+
   audioEl.currentTime = 0;
   audioEl.play();
 }
 
-const slotsElements = document.querySelectorAll(".slot");
-slotsElements.forEach((slotEl) =>
-  slotEl.addEventListener("transitionend", removeTransition)
-);
+const slotsElements = document.querySelectorAll("div[data-slot]");
+slotsElements.forEach((slotEl) => {
+  slotEl.addEventListener("click", () =>
+    playSound(slotEl.getAttribute("data-slot"))
+  );
+});
 
 updateSamplesBtnEl.addEventListener("click", () => {
   updateSamples(slots);
 });
 
-window.addEventListener("keydown", playSound);
+window.addEventListener("keydown", (e) => {
+  playSound(keyToSlot[e.code]);
+  console.log(e.code);
+});

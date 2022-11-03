@@ -10,29 +10,29 @@
   <body>
     <div class="wrapper">
       <div class="slots">
-        <div data-key="65" class="slot">
+        <div data-slot="01" class="slot">
           <div class="slot__key">A</div>
           kick
         </div>
-        <div data-key="83" class="slot">
+        <div data-slot="02" class="slot">
           <div class="slot__key">S</div>
           snare
         </div>
-        <div data-key="68" class="slot">
+        <div data-slot="03" class="slot">
           <div class="slot__key">D</div>
           closed hh
         </div>
-        <div data-key="70" class="slot">
+        <div data-slot="04" class="slot">
           <div class="slot__key">F</div>
           open hh
         </div>
       </div>
-      <button class="button-icon" id="updateSamplesBtn">New Samples</button>
+      <button class="button" id="updateSamplesBtn">new samples</button>
     </div>
-    <audio id="audio-slot01" data-key="65" src="sounds/kick.wav"></audio>
-    <audio id="audio-slot02" data-key="83" src="sounds/snare.wav"></audio>
-    <audio id="audio-slot03" data-key="68" src="sounds/hihat.wav"></audio>
-    <audio id="audio-slot04" data-key="70" src="sounds/openhat.wav"></audio>
+    <audio id="audio-slot01" data-slot="01" src="sounds/kick.wav"></audio>
+    <audio id="audio-slot02" data-slot="02" src="sounds/snare.wav"></audio>
+    <audio id="audio-slot03" data-slot="03" src="sounds/hihat.wav"></audio>
+    <audio id="audio-slot04" data-slot="04" src="sounds/openhat.wav"></audio>
 
     <script src="script.js"></script>
   </body>
