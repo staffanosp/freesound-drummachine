@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Freesound Drummachine</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="slots">
+        <div data-key="65" class="slot">
+          <div class="slot__key">A</div>
+          kick
+        </div>
+        <div data-key="83" class="slot">
+          <div class="slot__key">S</div>
+          snare
+        </div>
+        <div data-key="68" class="slot">
+          <div class="slot__key">D</div>
+          closed hh
+        </div>
+        <div data-key="70" class="slot">
+          <div class="slot__key">F</div>
+          open hh
+        </div>
+      </div>
+      <button class="button-icon" id="updateSamplesBtn">New Samples</button>
+    </div>
+    <audio id="audio-slot01" data-key="65" src="sounds/kick.wav"></audio>
+    <audio id="audio-slot02" data-key="83" src="sounds/snare.wav"></audio>
+    <audio id="audio-slot03" data-key="68" src="sounds/hihat.wav"></audio>
+    <audio id="audio-slot04" data-key="70" src="sounds/openhat.wav"></audio>
+
+    <script src="/src/script.js"></script>
+  </body>
+</html>

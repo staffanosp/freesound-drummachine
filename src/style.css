@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Shrikhand&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 16px;
+  font-family: "Fira Code", monospace;
+  background-color: #eee;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.wrapper > * {
+  flex: 0;
+}
+
+.slots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.slot {
+  font-size: 1rem;
+  padding: 1rem;
+  transition: all 0.2s ease;
+  width: 10rem;
+  height: 10rem;
+  text-align: center;
+  color: white;
+  background: #5100fe;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slot__key {
+  font-size: 4rem;
+}
+
+.playing {
+  transition: all 0.1s ease;
+  transform: scale(1);
+  background: #a352ff;
+  box-shadow: 0 0 1rem #5100fe;
+}
+
+.button-icon {
+  padding: 2rem;
+}
+
+.button-icon img {
+  height: 3rem;
+}
