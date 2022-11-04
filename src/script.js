@@ -60,7 +60,7 @@ async function getRandomSampleUrl(tags) {
   const data = await res.json();
   const urls = data.results;
   const url =
-    urls[Math.floor(Math.random() * urls.length)].previews["preview-hq-ogg"];
+    urls[Math.floor(Math.random() * urls.length)].previews["preview-hq-mp3"];
 
   return url;
 }
