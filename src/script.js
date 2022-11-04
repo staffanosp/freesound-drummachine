@@ -51,7 +51,6 @@ const isAnySlotLoading = () => {
 };
 
 async function getRandomSampleUrl(tags) {
-  console.log(`getRandomSampleUrl(${tags})`);
   const tagsQuery = tags.map((tag) => "tag:" + tag).join("%20");
 
   const res = await fetch(
@@ -63,7 +62,6 @@ async function getRandomSampleUrl(tags) {
   const url =
     urls[Math.floor(Math.random() * urls.length)].previews["preview-hq-ogg"];
 
-  console.log(tags, url);
   return url;
 }
 
@@ -94,7 +92,6 @@ async function newSampleInSlot(slot) {
 function newSamplesInAllSlots() {
   for (let [slot, props] of Object.entries(slots)) {
     if (props.locked) continue;
-    console.log(slot);
     newSampleInSlot(slot);
   }
 }
@@ -130,7 +127,6 @@ newSamplesBtnEl.addEventListener("click", () => {
 
 window.addEventListener("keydown", (e) => {
   const slot = keyToSlot[e.code];
-  console.log(slot);
   if (!slot) return;
   playSound(keyToSlot[e.code]);
 });
