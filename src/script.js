@@ -15,10 +15,10 @@ const addSlot = (id, label, tags, src, key) =>
     loading: false,
   });
 
-addSlot("slot01", "kick", ["kick"], "sounds/kick.wav", "A");
-addSlot("slot02", "snare", ["snare"], "sounds/snare.wav", "S");
-addSlot("slot03", "closed hh", ["closed", "hihat"], "sounds/hihat.wav", "D");
-addSlot("slot04", "open hh", ["open", "hihat"], "sounds/openhat.wav", "F");
+addSlot("slot01", "kick", ["kick"], "", "A");
+addSlot("slot02", "snare", ["snare"], "", "S");
+addSlot("slot03", "closed hh", ["closed", "hihat"], "", "D");
+addSlot("slot04", "open hh", ["open", "hihat"], "", "F");
 
 const keyToSlot = {};
 
