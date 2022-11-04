@@ -27,7 +27,7 @@
   flex: 0;
 }
 
-.slots {
+.slots-container {
   display: flex;
   align-items: center;
   justify-content: center;
