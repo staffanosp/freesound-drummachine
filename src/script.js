@@ -26,6 +26,7 @@ for (let [slot, props] of Object.entries(slots)) {
   keyToSlot["Key" + props.key] = slot;
 
   //add elements to the DOM
+  //UI:
   slotsContainerEl.innerHTML += `
   <div data-slot="${slot}" class="slot">
     <div class="slot__key">${props.key}
@@ -33,6 +34,7 @@ for (let [slot, props] of Object.entries(slots)) {
   </div>
   `;
 
+  //Audio:
   audiosContainerEl.innerHTML += `<audio data-slot="${slot}" src="${props.src}"></audio>`;
 }
 
@@ -66,12 +68,14 @@ async function newSampleInSlot(slot) {
   const audioEl = document.querySelector(`audio[data-slot="${slot}"]`);
   const oldInnerHTML = slotEl.innerHTML;
 
+  slotEl.classList.add("slot--loading");
   slotEl.innerHTML = "Loading";
   slots[slot].loading = true;
 
   const src = await getRandomSampleUrl(slots[slot].tags);
   audioEl.src = src;
   slotEl.innerHTML = oldInnerHTML;
+  slotEl.classList.remove("slot--loading");
   slots[slot].loading = false;
   newSamplesBtnEl.disabled = isAnySlotLoading();
 }
@@ -92,9 +96,9 @@ function playSound(slot) {
   const audioEl = document.querySelector(`audio[data-slot="${slot}"]`);
   const slotEl = document.querySelector(`div[data-slot="${slot}"]`);
 
-  slotEl.classList.add("playing");
+  slotEl.classList.add("slot--playing");
 
-  setTimeout(() => slotEl.classList.remove("playing"), 0);
+  setTimeout(() => slotEl.classList.remove("slot--playing"), 0);
 
   audioEl.currentTime = 0;
   audioEl.play();
