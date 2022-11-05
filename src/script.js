@@ -1,7 +1,7 @@
 "use strict";
 
 const slotsContainerEl = document.querySelector("#slots_container");
-const audiosContainerEl = document.querySelector("#audios_continer");
+const audiosContainerEl = document.querySelector("#audios_container");
 const newSamplesBtnEl = document.querySelector("#newSamplesBtn");
 
 const slots = {};
