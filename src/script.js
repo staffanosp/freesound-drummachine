@@ -5,8 +5,8 @@ const audiosContainerEl = document.querySelector("#audios_container");
 const newSamplesBtnEl = document.querySelector("#newSamplesBtn");
 
 const slots = {};
-const addSlot = (id, label, tags, src, key) =>
-  (slots[id] = {
+const addSlot = (slot, label, tags, src, key) =>
+  (slots[slot] = {
     label,
     tags,
     src,
@@ -53,6 +53,7 @@ const isAnySlotLoading = () => {
 async function getRandomSampleUrl(tags) {
   const tagsQuery = tags.map((tag) => "tag:" + tag).join("%20");
 
+  //todo: use encode() for the fetch call
   const res = await fetch(
     `https://freesound.org/apiv2/search/text/?token=E1OojwrkSjrxZYsv1rdfzFh8Iqn8Pt50gBsSITJD&page_size=50&filter=${tagsQuery}%20ac_single_event:true%20ac_loop:false%20avg_rating:%5B3%20TO%20%2A%5D&fields=id,name,previews`
   );
@@ -92,6 +93,7 @@ async function newSampleInSlot(slot) {
 function newSamplesInAllSlots() {
   for (let [slot, props] of Object.entries(slots)) {
     if (props.locked) continue;
+
     newSampleInSlot(slot);
   }
 }
