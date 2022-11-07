@@ -66,6 +66,7 @@ async function getRandomSampleUrl(tags) {
 }
 
 async function newSampleInSlot(slot) {
+  slots[slot].loading = true;
   newSamplesBtnEl.disabled = isAnySlotLoading();
 
   const slotEl = document.querySelector(`div[data-slot="${slot}"] .slot__slot`);
@@ -76,7 +77,6 @@ async function newSampleInSlot(slot) {
 
   slotEl.classList.add("slot__slot--loading");
   slotLoadingEl.classList.add("--visible");
-  slots[slot].loading = true;
 
   const src = await getRandomSampleUrl(slots[slot].tags);
   slots[slot].src = src;
